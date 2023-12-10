@@ -75,15 +75,15 @@
         var key = event.key;
         
         //  incremental rotation
-        if (key == 'x')
+        if (key == "ArrowUp")
             angles[0] -= angleInc;
-        else if (key == 'y')
+        else if (key == "ArrowLeft")
             angles[1] -= angleInc;
         else if (key == 'z')
             angles[2] -= angleInc;
-        else if (key == 'X')
+        else if (key == "ArrowDown")
             angles[0] += angleInc;
-        else if (key == 'Y')
+        else if (key == "ArrowRight")
             angles[1] += angleInc;
         else if (key == 'Z')
             angles[2] += angleInc;
@@ -122,15 +122,19 @@
               <table border="1">
               <tbody>
               <tr>
-              <td>x, y, z</td>
-              <td>Rotate the current shape forward about the x, y, or z axis</td>
+              <td>Up/Down Arrows</td>
+              <td>Rotate the scene forward/backwards about the x-axis</td>
               </tr>
               <tr>
-              <td>X, Y, Z</td>
-              <td>Rotate the current shape backward about the x, y, or z axis</td>
+              <td>Left/Right Arrows</td>
+              <td>Rotate the scene forward/backwards about the y-axis</td>
               </tr>
               <tr>
-              <td>r, R</td>
+              <td>z/Z</td>
+              <td>Rotate the scene forwards/backwards about the z-axis</td>
+              </tr>
+              <tr>
+              <td>r/R</td>
               <td>Reset the figure to its original orientation</td>
               </tr>
               </tbody>
@@ -139,9 +143,6 @@
           </td>
       </tr>
   </table>
-  
-  
-
 </body>
 </html>
 
