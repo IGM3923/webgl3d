@@ -2,7 +2,9 @@
 ///     shapes from triangles
 /// Author: Isaac Mixon
 
-
+// TODO: Instead of subdivisions, we will need to update the size of each shape to make sense in
+// the scene. We will need to fix the code for cylinders (and spheres, if necessary). Subdivisions
+// and sizes can probably be hardcoded to whatever looks the best. 
 
 //
 // fill in code that creates the triangles for a cube with dimensions 1x1x1

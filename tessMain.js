@@ -94,7 +94,10 @@ function createNewShape() {
     indices = [];
     bary = [];
     
-    // make your shape based on type
+    //TODO: Instead of switching between shapes, make all draw requests below. 
+    
+
+    // make your shape based on type (TODO: See above)
     if (curShape == CUBE) makeCube (division1);
     else if (curShape == CYLINDER) makeCylinder ( division1, division2);
     else if (curShape == CONE) makeCone ( division1, division2);
