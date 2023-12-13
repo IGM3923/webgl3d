@@ -47,6 +47,7 @@ function makeCube (subdivisions)  {
 //heightdivision.
 //
 function makeCylinder (radialdivision,heightdivision){
+    
     var pi = Math.PI;
     for (i = 0; i < radialdivision; i++)
     {
@@ -58,10 +59,14 @@ function makeCylinder (radialdivision,heightdivision){
         addTriangle(0,0,0.5,x2,y2,0.5,x1,y1,0.5);
         addTriangle(0,0,-0.5,x1,y1,-0.5,x2,y2,-0.5);
 
-        for (j = -0.5; j < heightdivision+0.5; j++)
+        var offset = 1/heightdivision;
+
+        var j=-0.5;
+        for(k = 0; k < heightdivision; k++)
         {
-            addTriangle(x2,y2,j,x1,y1,(j+(1/heightdivision)),x2,y2,(j+(1/heightdivision)));
-            addTriangle(x2,y2,j,x1,y1,j,x1,y1,(j+(1/heightdivision)));
+            addTriangle(x2,y2,j,x1,y1,(j+(offset)),x2,y2,(j+(offset)));
+            addTriangle(x2,y2,j,x1,y1,j,x1,y1,(j+(offset)));
+            j += offset;
         }
     }
 
