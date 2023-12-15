@@ -95,15 +95,15 @@ function createNewShape() {
     bary = [];
     
     //TODO: Instead of switching between shapes, make all draw requests below. 
-    
+    makeBase(division1);
 
     // make your shape based on type (TODO: See above)
-    if (curShape == CUBE) makeCube (division1);
-    else if (curShape == CYLINDER) makeCylinder ( division1, division2);
-    else if (curShape == CONE) makeCone ( division1, division2);
-    else if (curShape == SPHERE) makeSphere ( division1, division2);
-    else
-        console.error(`Bad object type`);
+    // if (curShape == CUBE) makeCube (division1);
+    // else if (curShape == CYLINDER) makeCylinder ( division1, division2);
+    // else if (curShape == CONE) makeCone ( division1, division2);
+    // else if (curShape == SPHERE) makeSphere ( division1, division2);
+    // else
+    //     console.error(`Bad object type`);
         
     //create and bind VAO
     if (myVAO == null) myVAO = gl.createVertexArray();

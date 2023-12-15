@@ -2,16 +2,13 @@
 ///     shapes from triangles
 /// Author: Isaac Mixon
 
-// TODO: Instead of subdivisions, we will need to update the size of each shape to make sense in
-// the scene. We will need to fix the code for cylinders (and spheres, if necessary). Subdivisions
-// and sizes can probably be hardcoded to whatever looks the best. 
+////////////////////////////////////////////////////////////////////
+//
+//  BASE SHAPE CODE
+//
+///////////////////////////////////////////////////////////////////
 
-//
-// fill in code that creates the triangles for a cube with dimensions 1x1x1
-// on each side (and the origin in the center of the cube). with an equal
-// number of subdivisions along each cube face as given by the parameter
-//subdivisions
-//
+
 function makeCube (subdivisions)  {
     var offset = (1 / subdivisions);
     // vertical subdivisions
@@ -39,13 +36,6 @@ function makeCube (subdivisions)  {
 }
 
 
-//
-// fill in code that creates the triangles for a cylinder with diameter 1
-// and height of 1 (centered at the origin) with the number of subdivisions
-// around the base and top of the cylinder (given by radialdivision) and
-// the number of subdivisions along the surface of the cylinder given by
-//heightdivision.
-//
 function makeCylinder (radialdivision,heightdivision){
     
     var pi = Math.PI;
@@ -73,13 +63,6 @@ function makeCylinder (radialdivision,heightdivision){
 }
 
 
-//
-// fill in code that creates the triangles for a cone with diameter 1
-// and height of 1 (centered at the origin) with the number of
-// subdivisions around the base of the cone (given by radialdivision)
-// and the number of subdivisions along the surface of the cone
-//given by heightdivision.
-//
 function makeCone (radialdivision, heightdivision) {
     var pi = Math.PI;
     for (i = 0; i < radialdivision; i++)
@@ -100,19 +83,58 @@ function makeCone (radialdivision, heightdivision) {
 
 }
     
-//
-// fill in code that creates the triangles for a sphere with diameter 1
-// (centered at the origin) with number of slides (longitude) given by
-// slices and the number of stacks (lattitude) given by stacks.
-// For this function, you will implement the tessellation method based
-// on spherical coordinates as described in the video (as opposed to the
-//recursive subdivision method).
-//
+
 function makeSphere (slices, stacks) {
-    // fill in your code here.
-    // Could not figure this one out :(
+    return null;
+    // UNIMPLEMENTED 
 }
 
+////////////////////////////////////////////////////////////////////
+//
+//  CODE FOR SPECIFIC PIECES OF SCENE
+//
+///////////////////////////////////////////////////////////////////
+
+
+// Alt of makeCube used for the base of castle building
+function makeBase (subdivisions)  {
+    var offset = (1 / subdivisions);
+    // vertical subdivisions
+    for (x = 0; x < subdivisions; x++)
+    {
+        for (y = 0; y < subdivisions; y++)
+        {
+            // Back
+            addTriangle(((x+1)*offset-0.5)-0.5, (y*offset-0.5), -0.5, (x*offset-0.5)-0.5, (y*offset-0.5), -0.5, (x*offset-0.5)-0.5, ((y+1)*offset-0.5), -0.5);
+            addTriangle(((x+1)*offset-0.5)+0.5, (y*offset-0.5), -0.5, (x*offset-0.5)+0.5, (y*offset-0.5), -0.5, (x*offset-0.5)+0.5, ((y+1)*offset-0.5), -0.5);
+            addTriangle(((x+1)*offset-0.5)-0.5, (y*offset-0.5), -0.5, (x*offset-0.5)-0.5, ((y+1)*offset-0.5), -0.5, ((x+1)*offset-0.5)-0.5, ((y+1)*offset-0.5), -0.5);
+            addTriangle(((x+1)*offset-0.5)+0.5, (y*offset-0.5), -0.5, (x*offset-0.5)+0.5, ((y+1)*offset-0.5), -0.5, ((x+1)*offset-0.5)+0.5, ((y+1)*offset-0.5), -0.5);
+            // Front
+            addTriangle((x*offset-0.5)-0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)-0.5, (y*offset-0.5), 0.5, (x*offset-0.5)-0.5, ((y+1)*offset-0.5), 0.5);
+            addTriangle((x*offset-0.5)+0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)+0.5, (y*offset-0.5), 0.5, (x*offset-0.5)+0.5, ((y+1)*offset-0.5), 0.5);
+            addTriangle((x*offset-0.5)-0.5, ((y+1)*offset-0.5), 0.5, ((x+1)*offset-0.5)-0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)-0.5, ((y+1)*offset-0.5), 0.5);
+            addTriangle((x*offset-0.5)+0.5, ((y+1)*offset-0.5), 0.5, ((x+1)*offset-0.5)+0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)+0.5, ((y+1)*offset-0.5), 0.5);
+
+            // Side Left
+            addTriangle(-1, (x*offset-0.5), ((y+1)*offset-0.5), -1, ((x+1)*offset-0.5), (y*offset-0.5), -1, (x*offset-0.5), (y*offset-0.5));
+            addTriangle(-1, ((x+1)*offset-0.5), ((y+1)*offset-0.5), -1, ((x+1)*offset-0.5), (y*offset-0.5), -1, (x*offset-0.5), ((y+1)*offset-0.5));
+            // Side Right
+            addTriangle(1, ((x+1)*offset-0.5), (y*offset-0.5), 1, (x*offset-0.5), ((y+1)*offset-0.5), 1, (x*offset-0.5), (y*offset-0.5));
+            addTriangle(1, ((x+1)*offset-0.5), (y*offset-0.5), 1, ((x+1)*offset-0.5), ((y+1)*offset-0.5), 1, (x*offset-0.5), ((y+1)*offset-0.5));
+            
+            // Bottom
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.5, (y*offset-0.5), (x*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5), (x*offset-0.5)-0.5, -0.5, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.5, (y*offset-0.5), (x*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5), (x*offset-0.5)+0.5, -0.5, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.5, (y*offset-0.5), ((x+1)*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5), (x*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.5, (y*offset-0.5), ((x+1)*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5), (x*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5));
+            // Top
+            addTriangle((x*offset-0.5)-0.5, 0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-0.5, 0.5, (y*offset-0.5), (x*offset-0.5)-0.5, 0.5, (y*offset-0.5));
+            addTriangle((x*offset-0.5)+0.5, 0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+0.5, 0.5, (y*offset-0.5), (x*offset-0.5)+0.5, 0.5, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-0.5, 0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-0.5, 0.5, (y*offset-0.5), (x*offset-0.5)-0.5, 0.5, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+0.5, 0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+0.5, 0.5, (y*offset-0.5), (x*offset-0.5)+0.5, 0.5, ((y+1)*offset-0.5));
+        }
+    }
+}
 
 
 ////////////////////////////////////////////////////////////////////
