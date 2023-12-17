@@ -195,25 +195,25 @@ function addTriangle (x0,y0,z0,x1,y1,z1,x2,y2,z2) {
     var nverts = points.length / 4;
     
     // push first vertex
-    points.push(x0);  bary.push (1.0);
-    points.push(y0);  bary.push (0.0);
-    points.push(z0);  bary.push (0.0);
+    points.push(x0);  uvs.push (1.0);
+    points.push(y0);  uvs.push (0.0);
+    points.push(z0);  uvs.push (0.0);
     points.push(1.0);
     indices.push(nverts);
     nverts++;
     
     // push second vertex
-    points.push(x1); bary.push (0.0);
-    points.push(y1); bary.push (1.0);
-    points.push(z1); bary.push (0.0);
+    points.push(x1); uvs.push (0.0);
+    points.push(y1); uvs.push (1.0);
+    points.push(z1); uvs.push (0.0);
     points.push(1.0);
     indices.push(nverts);
     nverts++
     
     // push third vertex
-    points.push(x2); bary.push (0.0);
-    points.push(y2); bary.push (0.0);
-    points.push(z2); bary.push (1.0);
+    points.push(x2); uvs.push (0.0);
+    points.push(y2); uvs.push (0.0);
+    points.push(z2); uvs.push (1.0);
     points.push(1.0);
     indices.push(nverts);
     nverts++;
