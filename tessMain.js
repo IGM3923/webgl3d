@@ -210,7 +210,7 @@
     // Retrieve a WebGL context
     gl = canvas.getContext('webgl2');
     // Set the clear color to be black
-    gl.clearColor(0, 0, 0, 1);
+    //gl.clearColor(0, 0, 0, 1);
       
     // some GL initialization
     // these var's are necessary for texturing:
@@ -223,7 +223,7 @@
     gl.enable(gl.CULL_FACE);
     gl.cullFace(gl.BACK);
     gl.frontFace(gl.CCW);
-    gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    //gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
 
     // Read, compile, and link your shaders
