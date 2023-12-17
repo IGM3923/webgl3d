@@ -77,7 +77,6 @@ function makeBase (subdivisions)  {
 
 
 function makeCylinder (radialdivision,heightdivision){
-    
     var pi = Math.PI;
     for (i = 0; i < radialdivision; i++)
     {
@@ -86,16 +85,16 @@ function makeCylinder (radialdivision,heightdivision){
         y1 = Math.sin(i*(2*pi/radialdivision))*0.5;
         y2 = Math.sin((i+1)*(2*pi/radialdivision))*0.5;
         
-        addTriangle(0,0,0.5,x2,y2,0.5,x1,y1,0.5);
-        addTriangle(0,0,-0.5,x1,y1,-0.5,x2,y2,-0.5);
+        addTriangle(-1,0,0.5,x2-1,y2,0.5,x1-1,y1,0.5);
+        addTriangle(-1,0,-0.5,x1-1,y1,-0.5,x2-1,y2,-0.5);
 
         var offset = 1/heightdivision;
 
         var j=-0.5;
         for(k = 0; k < heightdivision; k++)
         {
-            addTriangle(x2,y2,j,x1,y1,(j+(offset)),x2,y2,(j+(offset)));
-            addTriangle(x2,y2,j,x1,y1,j,x1,y1,(j+(offset)));
+            addTriangle(x2-1,y2,j,x1-1,y1,(j+(offset)),x2-1,y2,(j+(offset)));
+            addTriangle(x2-1,y2,j,x1-1,y1,j,x1-1,y1,(j+(offset)));
             j += offset;
         }
     }
@@ -195,9 +194,9 @@ function addTriangle (x0,y0,z0,x1,y1,z1,x2,y2,z2) {
     var nverts = points.length / 4;
     
     // push first vertex
-    points.push(x0);  uvs.push (1.0);
-    points.push(y0);  uvs.push (0.0);
-    points.push(z0);  uvs.push (0.0);
+    points.push(x0);  uvs.push (1.0); 
+    points.push(y0);  uvs.push (0.0); 
+    points.push(z0);  uvs.push (0.0); 
     points.push(1.0);
     indices.push(nverts);
     nverts++;

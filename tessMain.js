@@ -20,7 +20,7 @@
   var division2 = 1;
   var updateDisplay = true;
   var anglesReset = [10.0, 10.0, 0.0];
-  var angles = [10.0, 10.0, 0.0];
+  var angles = [90.0, 10.0, 0.0];
   var angleInc = 5.0;
   
   // Shapes we can draw
@@ -131,9 +131,8 @@
       uvs = [];
 
       // make your shape based on type
-      if (curShape == SQUARE) makeBase (5);
-      else
-          console.error(`Bad object type`);
+      makeBase(5);
+      makeCylinder(20,2);
           
       //create and bind VAO
       if (myVAO == null) myVAO = gl.createVertexArray();
