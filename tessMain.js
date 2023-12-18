@@ -7,6 +7,7 @@
     points,
     texture,
     texture1,
+    texture2,
     indices,
     uvs;
   
@@ -112,9 +113,23 @@
 
     gl.bindTexture(gl.TEXTURE_2D, null);
 
+    // TEXTURE 3
+    texture2 = gl.createTexture();
+
+    gl.bindTexture(gl.TEXTURE_2D, texture2);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, images[2]);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    gl.bindTexture(gl.TEXTURE_2D, null);
+
     // CALLS TO CREATE SHAPES
     createBase();
     createSideTower();
+    createTerrain();
   }
 
   async function loadImages(imgs) {
@@ -224,6 +239,52 @@
     updateDisplay = true;
     draw();
   }
+  function createTerrain() {
+      
+    // clear your points and elements
+    points = [];
+    indices = [];
+    uvs = [];
+
+    // make your shape based on type
+    makeTerrain(5);
+    //makeCylinder(20,2);
+        
+    //create and bind VAO
+    if (myVAO == null) myVAO = gl.createVertexArray();
+    gl.bindVertexArray(myVAO);
+    
+    // create and bind vertex buffer
+    if (myVertexBuffer == null) myVertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myVertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexPosition);
+    gl.vertexAttribPointer(program.aVertexPosition, 4, gl.FLOAT, false, 0, 0);
+    
+    // create and bind uv buffer
+    if (myUVBuffer == null) myUVBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myUVBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexTextureCoords);
+    // note that texture uv's are 2d, which is why there's a 2 below
+    gl.vertexAttribPointer(program.aVertexTextureCoords, 2, gl.FLOAT, false, 0, 0);
+
+    // uniform values
+    gl.uniform3fv (program.uTheta, new Float32Array(angles));
+   
+    // Setting up the IBO
+    if (myIndexBuffer == null) myIndexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+    // Clean
+    gl.bindVertexArray(null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+      
+    updateDisplay = true;
+    draw2();
+}
 
   // We call draw to render to our canvas
   // THIS DRAW USES TEXTURE IN IMAGE[0] POSITION
@@ -239,18 +300,6 @@
     // bind the texture
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.uniform1i(program.uSampler, 0);
-
-    // Draw to the scene using triangle primitives
-    gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
-
-    // Bind the VAO
-    gl.bindVertexArray(myVAO);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
-
-    // bind the texture
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture1);
     gl.uniform1i(program.uSampler, 0);
 
     // Draw to the scene using triangle primitives
@@ -281,13 +330,26 @@
     // Draw to the scene using triangle primitives
     gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
 
+    // Clean
+    gl.bindVertexArray(null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+  }
+  // We call draw to render to our canvas
+  // THIS DRAW USES TEXTURE IN IMAGE[2] POSITION
+  function draw2() {
+    // Clear the scene
+    //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
     // Bind the VAO
     gl.bindVertexArray(myVAO);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
 
     // bind the texture
     gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture1);
+    gl.bindTexture(gl.TEXTURE_2D, texture2);
     gl.uniform1i(program.uSampler, 0);
 
     // Draw to the scene using triangle primitives
@@ -302,7 +364,7 @@
 
   // Entry point to our application
   async function init() {
-    await loadImages(['walltexture1.jpg', 'sky.png']);
+    await loadImages(['walltexture1.jpg', 'sky.png', 'grass.jpg']);
     // Retrieve the canvas
     const canvas = document.getElementById('webgl-canvas');
     if (!canvas) {
