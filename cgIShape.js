@@ -75,49 +75,84 @@ function makeBase (subdivisions)  {
     }
 }
 
+/**
+ * 
+ * @param {*} radialdivision 
+ * @param {*} heightdivision 
+ * @param {*} origin [x,y,z]
+ * @param {*} radius 
+ * @param {*} height 
+ */
+function makeCylinder (radialdivision,heightdivision,origin,radius,height){
 
-function makeCylinder (radialdivision,heightdivision){
+    var xorg = origin[0];
+    var yorg = origin[1];
+    var zorg = origin[2];
+
+    var top = zorg + height
     
     var pi = Math.PI;
     for (i = 0; i < radialdivision; i++)
     {
-        x1 = Math.cos(i*(2*pi/radialdivision))*0.5;
-        x2 = Math.cos((i+1)*(2*pi/radialdivision))*0.5;
-        y1 = Math.sin(i*(2*pi/radialdivision))*0.5;
-        y2 = Math.sin((i+1)*(2*pi/radialdivision))*0.5;
+        x1 = xorg + Math.cos(i*(2*pi/radialdivision))*radius;
+        x2 = xorg + Math.cos((i+1)*(2*pi/radialdivision))*radius;
+        y1 = yorg + Math.sin(i*(2*pi/radialdivision))*radius;
+        y2 = yorg + Math.sin((i+1)*(2*pi/radialdivision))*radius;
         
-        addTriangle(0,0,0.5,x2,y2,0.5,x1,y1,0.5);
-        addTriangle(0,0,-0.5,x1,y1,-0.5,x2,y2,-0.5);
+        //addTriangle(0,0,0.5,x2,y2,0.5,x1,y1,0.5);
+        addTriangle(xorg,top,yorg,x2,top,y2,x1,top,y1);
+        //addTriangle(0,0,-0.5,x1,y1,-0.5,x2,y2,-0.5);
+        addTriangle(xorg,zorg,yorg,x1,zorg,y1,x2,zorg,y2);
 
-        var offset = 1/heightdivision;
 
-        var j=-0.5;
+        var offset = height/heightdivision;
+
+        var j=zorg;
         for(k = 0; k < heightdivision; k++)
         {
-            addTriangle(x2,y2,j,x1,y1,(j+(offset)),x2,y2,(j+(offset)));
-            addTriangle(x2,y2,j,x1,y1,j,x1,y1,(j+(offset)));
+            //addTriangle(x2,y2,j,x1,y1,(j+(offset)),x2,y2,(j+(offset)));
+            addTriangle(x2,j,y2,x1,(j+(offset)),y1,x2,(j+(offset)),y2);
+            //addTriangle(x2,y2,j,x1,y1,j,x1,y1,(j+(offset)));
+            addTriangle(x2,j,y2,x1,j,y1,x1,(j+(offset)),y1);
             j += offset;
         }
     }
 
 }
 
+/**
+ * 
+ * @param {*} radialdivision 
+ * @param {*} heightdivision 
+ * @param {*} origin 
+ * @param {*} radius 
+ * @param {*} height 
+ */
+function makeCone (radialdivision, heightdivision,origin,radius,height) {
 
-function makeCone (radialdivision, heightdivision) {
+    var xorg = origin[0];
+    var yorg = origin[1];
+    var zorg = origin[2];
+    var top = zorg + height
+    
     var pi = Math.PI;
     for (i = 0; i < radialdivision; i++)
     {
-        x1 = Math.cos(i*(2*pi/radialdivision))*0.5;
-        x2 = Math.cos((i+1)*(2*pi/radialdivision))*0.5;
-        y1 = Math.sin(i*(2*pi/radialdivision))*0.5;
-        y2 = Math.sin((i+1)*(2*pi/radialdivision))*0.5;
+        x1 = xorg + Math.cos(i*(2*pi/radialdivision))*radius;
+        x2 = xorg + Math.cos((i+1)*(2*pi/radialdivision))*radius;
+        y1 = yorg + Math.sin(i*(2*pi/radialdivision))*radius;
+        y2 = yorg + Math.sin((i+1)*(2*pi/radialdivision))*radius;
 
-        addTriangle(0,0,0,x1,y1,0,x2,y2,0);
+        //addTriangle(0,0,0,x1,y1,0,x2,y2,0);
+        addTriangle(xorg,zorg,yorg,x1,zorg,y1,x2,zorg,y2);
 
         for (j = 0; j < heightdivision; j++)
         {
-            addTriangle(x2,y2,j,x1*(heightdivision-1/heightdivision), y1*(heightdivision-1/heightdivision), j + (1/heightdivision), x2*(heightdivision-1/heightdivision), y2*(heightdivision-1/heightdivision), j+(1/heightdivision))
-            addTriangle(x2,y2,j,x1,y1,j,x1*(heightdivision-1/heightdivision), y1*(heightdivision-1/heightdivision), j + (1/heightdivision))
+            if (heightdivision - 1 == 0){
+                addTriangle(x2,zorg,y2,x1,zorg,y1,xorg,zorg+height,yorg);
+            }
+            //addTriangle(x2,j+zorg,y2,x1*(heightdivision-1/heightdivision), j + zorg + (1/heightdivision), y1*(heightdivision-1/heightdivision), x2*(heightdivision-1/heightdivision), j+zorg+(1/heightdivision), y2*(heightdivision-1/heightdivision))
+            //addTriangle(x2,zorg+j,y2,x1,zorg+j,y1,x1*(heightdivision-1/heightdivision),j + zorg+(1/heightdivision), y1*(heightdivision-1/heightdivision))
         }
     }
 
