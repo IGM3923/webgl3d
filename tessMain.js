@@ -6,6 +6,7 @@
     program,
     points,
     texture,
+    texture1,
     indices,
     uvs;
   
@@ -19,13 +20,11 @@
   var division1 = 3;
   var division2 = 1;
   var updateDisplay = true;
-  var anglesReset = [90.0, 10.0, 0.0];
-  var angles = [90.0, 10.0, 0.0];
+  var anglesReset = [110.0, 10.0, 0.0];
+  var angles = [110.0, 10.0, 0.0];
   var angleInc = 5.0;
-  
-  // Shapes we can draw
-  var SQUARE = 1;
-  var curShape = SQUARE;
+  // IMAGES/TEXTURE SRC ARRAY
+  var images = [];
 
   // Given an id, extract the content's of a shader script
   // from the DOM and return the compiled shader
@@ -87,43 +86,52 @@
     // set up angle uniform
     program.uTheta = gl.getUniformLocation(program, 'theta');
     
-    // set up texture and image load and value
+    // set up textures and image load and value
+    // TEXTURE 1
     texture = gl.createTexture();
-      const image = new Image();
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, images[0]);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
 
-    // this approach can be used to load multiple files - just note it's async and needs
-    // to call whatever happens after the files get loaded
-    // you can load them into an array and use promises if you want as well
-    // just look up using promises
-   (async () => { 
-       image.src = 'walltexture1.jpg'; // note: file in same dir as other files for program
-       await image.decode();
-       // img is ready to use: this console write is left here to help
-       // others with potential debugging when changing this function
-       console.log(`width: ${image.width}, height: ${image.height}`);
-       gl.bindTexture(gl.TEXTURE_2D, texture);
-       gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, image);
-       if (isPowerOf2(image.width) && isPowerOf2(image.height)) {
-        gl.generateMipmap(gl.TEXTURE_2D);
-      } else {
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
-        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
-      }
-       gl.bindTexture(gl.TEXTURE_2D, null);
-       // create and bind your current object
-       createNewShape();
-       // do a draw
-       draw();
-      })();
-  }
-  function isPowerOf2(value) {
-    return (value & (value - 1)) == 0;
-  }
-  
+    gl.bindTexture(gl.TEXTURE_2D, null);
 
-  // general call to make and bind a new object based on current
-  // settings..Basically a call to shape specfic calls in cgIshape.js
-  function createNewShape() {
+    // TEXTURE 2
+    texture1 = gl.createTexture();
+
+    gl.bindTexture(gl.TEXTURE_2D, texture1);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, images[1]);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    gl.bindTexture(gl.TEXTURE_2D, null);
+
+    // CALLS TO CREATE SHAPES
+    createBase();
+    createSideTower();
+  }
+
+  async function loadImages(imgs) {
+    images = await Promise.all(imgs.map(loadImage));
+  }
+
+  function loadImage(url) {
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.onload = () => resolve(img);
+      img.onerror = reject;
+      img.crossOrigin = 'anonymous';
+      img.src = url;
+    });
+  }
+
+  function createBase() {
       
       // clear your points and elements
       points = [];
@@ -132,7 +140,7 @@
 
       // make your shape based on type
       makeBase(5);
-      makeCylinder(20,2);
+      //makeCylinder(20,2);
           
       //create and bind VAO
       if (myVAO == null) myVAO = gl.createVertexArray();
@@ -165,15 +173,63 @@
       gl.bindVertexArray(null);
       gl.bindBuffer(gl.ARRAY_BUFFER, null);
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-          
-      // indicate a redraw is required.
+        
       updateDisplay = true;
+      draw();
+  }
+  function createSideTower() {
+      
+    // clear your points and elements
+    points = [];
+    indices = [];
+    uvs = [];
+
+    // TODO: if we want to update the angles of this object separate of the main angle array, 
+    // angles = [0,0,0] // placeholder 0's
+    // this, however, does break rotation. ¯\_(ツ)_/¯
+    makeCylinder(10,2);
+        
+    //create and bind VAO
+    if (myVAO == null) myVAO = gl.createVertexArray();
+    gl.bindVertexArray(myVAO);
+    
+    // create and bind vertex buffer
+    if (myVertexBuffer == null) myVertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myVertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexPosition);
+    gl.vertexAttribPointer(program.aVertexPosition, 4, gl.FLOAT, false, 0, 0);
+    
+    // create and bind uv buffer
+    if (myUVBuffer == null) myUVBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myUVBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexTextureCoords);
+    // note that texture uv's are 2d, which is why there's a 2 below
+    gl.vertexAttribPointer(program.aVertexTextureCoords, 2, gl.FLOAT, false, 0, 0);
+
+    // uniform values
+    gl.uniform3fv (program.uTheta, new Float32Array(angles));
+   
+    // Setting up the IBO
+    if (myIndexBuffer == null) myIndexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+    // Clean
+    gl.bindVertexArray(null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+      
+    updateDisplay = true;
+    draw();
   }
 
   // We call draw to render to our canvas
+  // THIS DRAW USES TEXTURE IN IMAGE[0] POSITION
   function draw() {
     // Clear the scene
-    gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
 
     // Bind the VAO
@@ -188,14 +244,65 @@
     // Draw to the scene using triangle primitives
     gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
 
+    // Bind the VAO
+    gl.bindVertexArray(myVAO);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
+
+    // bind the texture
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture1);
+    gl.uniform1i(program.uSampler, 0);
+
+    // Draw to the scene using triangle primitives
+    gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+
     // Clean
     gl.bindVertexArray(null);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
+  }
+  // We call draw to render to our canvas
+  // THIS DRAW USES TEXTURE IN IMAGE[1] POSITION
+  function draw1() {
+    // Clear the scene
+    // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
+
+    // Bind the VAO
+    gl.bindVertexArray(myVAO);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
+
+    // bind the texture
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture1);
+    gl.uniform1i(program.uSampler, 0);
+
+    // Draw to the scene using triangle primitives
+    gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+
+    // Bind the VAO
+    gl.bindVertexArray(myVAO);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
+
+    // bind the texture
+    gl.activeTexture(gl.TEXTURE0);
+    gl.bindTexture(gl.TEXTURE_2D, texture1);
+    gl.uniform1i(program.uSampler, 0);
+
+    // Draw to the scene using triangle primitives
+    gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+
+    // Clean
+    gl.bindVertexArray(null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+
   }
 
   // Entry point to our application
-  function init() {
+  async function init() {
+    await loadImages(['walltexture1.jpg', 'sky.png']);
     // Retrieve the canvas
     const canvas = document.getElementById('webgl-canvas');
     if (!canvas) {
