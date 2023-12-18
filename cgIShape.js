@@ -211,10 +211,67 @@ function makeBase (subdivisions)  {
     }
 }
 
+// Alt of makeCube used for the flat terrain
+function makeTerrain (subdivisions)  {
+    var offset = (1 / subdivisions);
+    // vertical subdivisions
+    for (x = 0; x < subdivisions; x++)
+    {
+        for (y = 0; y < subdivisions; y++)
+        {
+            // Front
+            addTriangle((x*offset-0.5)-0.5, -0.9, 0.5, ((x+1)*offset-0.5)-0.5, -0.5, 0.5, (x*offset-0.5)-0.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)+0.5, -0.9, 0.5, ((x+1)*offset-0.5)+0.5, -0.5, 0.5, (x*offset-0.5)+0.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)-1.5, -0.9, 0.5, ((x+1)*offset-0.5)-1.5, -0.5, 0.5, (x*offset-0.5)-1.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)+1.5, -0.9, 0.5, ((x+1)*offset-0.5)+1.5, -0.5, 0.5, (x*offset-0.5)+1.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)-0.5, -0.9, 0.5, ((x+1)*offset-0.5)-0.5, -0.9, 0.5, ((x+1)*offset-0.5)-0.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)+0.5, -0.9, 0.5, ((x+1)*offset-0.5)+0.5, -0.9, 0.5, ((x+1)*offset-0.5)+0.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)-1.5, -0.9, 0.5, ((x+1)*offset-0.5)-1.5, -0.9, 0.5, ((x+1)*offset-0.5)-1.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)+1.5, -0.9, 0.5, ((x+1)*offset-0.5)+1.5, -0.9, 0.5, ((x+1)*offset-0.5)+1.5, -0.5, 0.5);
+            
+            // Back
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.9, -0.5, (x*offset-0.5)-0.5, -0.9, -0.5, (x*offset-0.5)-0.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.9, -0.5, (x*offset-0.5)+0.5, -0.9, -0.5, (x*offset-0.5)+0.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)-1.5, -0.9, -0.5, (x*offset-0.5)-1.5, -0.9, -0.5, (x*offset-0.5)-1.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)+1.5, -0.9, -0.5, (x*offset-0.5)+1.5, -0.9, -0.5, (x*offset-0.5)+1.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.9, -0.5, (x*offset-0.5)-0.5, -0.5, -0.5, ((x+1)*offset-0.5)-0.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.9, -0.5, (x*offset-0.5)+0.5, -0.5, -0.5, ((x+1)*offset-0.5)+0.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)-1.5, -0.9, -0.5, (x*offset-0.5)-1.5, -0.5, -0.5, ((x+1)*offset-0.5)-1.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)+1.5, -0.9, -0.5, (x*offset-0.5)+1.5, -0.5, -0.5, ((x+1)*offset-0.5)+1.5, -0.5, -0.5);
+
+            // Side Left
+            addTriangle(-1.5, -0.9, ((y+1)*offset-0.5), -1.5, -0.9, (y*offset-0.5), -1.5, -0.5, (y*offset-0.5));
+            addTriangle(-1.5, -0.9, ((y+1)*offset-0.5), -1.5, -0.5, (y*offset-0.5), -1.5, -0.5, ((y+1)*offset-0.5));
+            // Side Right
+            addTriangle(1.5, -0.9, -0.5, 1.5, -0.5, ((y+1)*offset-0.5), 1.5, -0.5, (y*offset-0.5));
+            addTriangle(1.5, -0.9, -0.5, 1.5, -0.9, ((y+1)*offset-0.5), 1.5, -0.5, ((y+1)*offset-0.5));
+
+            // Bottom
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.9, (y*offset-0.5), (x*offset-0.5)-0.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)-0.5, -0.9, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.9, (y*offset-0.5), (x*offset-0.5)+0.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)+0.5, -0.9, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-1.5, -0.9, (y*offset-0.5), (x*offset-0.5)-1.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)-1.5, -0.9, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+1.5, -0.9, (y*offset-0.5), (x*offset-0.5)+1.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)+1.5, -0.9, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.9, (y*offset-0.5), ((x+1)*offset-0.5)-0.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)-0.5, -0.9, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.9, (y*offset-0.5), ((x+1)*offset-0.5)+0.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)+0.5, -0.9, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-1.5, -0.9, (y*offset-0.5), ((x+1)*offset-0.5)-1.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)-1.5, -0.9, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+1.5, -0.9, (y*offset-0.5), ((x+1)*offset-0.5)+1.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)+1.5, -0.9, ((y+1)*offset-0.5));
+            // Top
+            addTriangle((x*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-0.5, -0.5, (y*offset-0.5), (x*offset-0.5)-0.5, -0.5, (y*offset-0.5));
+            addTriangle((x*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+0.5, -0.5, (y*offset-0.5), (x*offset-0.5)+0.5, -0.5, (y*offset-0.5));
+            addTriangle((x*offset-0.5)-1.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-1.5, -0.5, (y*offset-0.5), (x*offset-0.5)-1.5, -0.5, (y*offset-0.5));
+            addTriangle((x*offset-0.5)+1.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+1.5, -0.5, (y*offset-0.5), (x*offset-0.5)+1.5, -0.5, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-0.5, -0.5, (y*offset-0.5), (x*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+0.5, -0.5, (y*offset-0.5), (x*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-1.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-1.5, -0.5, (y*offset-0.5), (x*offset-0.5)-1.5, -0.5, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+1.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+1.5, -0.5, (y*offset-0.5), (x*offset-0.5)+1.5, -0.5, ((y+1)*offset-0.5));
+        }
+    }
+}
+
 
 ////////////////////////////////////////////////////////////////////
 //
-//  Do not edit below this line
+//  PROVIDED CODE
 //
 ///////////////////////////////////////////////////////////////////
 
@@ -230,25 +287,25 @@ function addTriangle (x0,y0,z0,x1,y1,z1,x2,y2,z2) {
     var nverts = points.length / 4;
     
     // push first vertex
-    points.push(x0);  bary.push (1.0);
-    points.push(y0);  bary.push (0.0);
-    points.push(z0);  bary.push (0.0);
+    points.push(x0);  uvs.push (1.0); 
+    points.push(y0);  uvs.push (0.0); 
+    points.push(z0);  uvs.push (0.0); 
     points.push(1.0);
     indices.push(nverts);
     nverts++;
     
     // push second vertex
-    points.push(x1); bary.push (0.0);
-    points.push(y1); bary.push (1.0);
-    points.push(z1); bary.push (0.0);
+    points.push(x1); uvs.push (0.0);
+    points.push(y1); uvs.push (1.0);
+    points.push(z1); uvs.push (0.0);
     points.push(1.0);
     indices.push(nverts);
     nverts++
     
     // push third vertex
-    points.push(x2); bary.push (0.0);
-    points.push(y2); bary.push (0.0);
-    points.push(z2); bary.push (1.0);
+    points.push(x2); uvs.push (0.0);
+    points.push(y2); uvs.push (0.0);
+    points.push(z2); uvs.push (1.0);
     points.push(1.0);
     indices.push(nverts);
     nverts++;
