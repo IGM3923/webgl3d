@@ -198,11 +198,32 @@
     points = [];
     indices = [];
     uvs = [];
+    bary = [];
 
     // TODO: if we want to update the angles of this object separate of the main angle array, 
     // angles = [0,0,0] // placeholder 0's
     // this, however, does break rotation. ¯\_(ツ)_/¯
-    makeCylinder(10,2);
+    // makeCylinder(10,2);
+    
+    //TODO: Instead of switching between shapes, make all draw requests below. 
+    makeBase(division1);
+    //corner tower 1
+    makeCylinder(10,10,[-1.0,-0.5,-0.5],0.25,1.5);
+    makeCone(10,1,[-1.0,-0.5,1],0.25,0.25);
+    //corner tower 2
+    makeCylinder(10,10,[-1.0,0.5,-0.5],0.25,1.5);
+    makeCone(10,1,[-1.0,0.5,1],0.25,0.25);
+    //corner tower 3
+    makeCylinder(10,10,[1.0,-0.5,-0.5],0.25,1.5);
+    makeCone(10,1,[1.0,-0.5,1],0.25,0.25);
+    //corner tower 4
+    makeCylinder(10,10,[1.0,0.5,-0.5],0.25,1.5);
+    makeCone(10,1,[1.0,0.5,1],0.25,0.25);
+    //middle tower
+    makeCylinder(10,10,[0,0,0.5],0.3,0.5);
+    makeCylinder(10,10,[0,0,1],0.2,0.5);
+    makeCone(10,1,[0,0,1.5],0.2,0.25);
+
         
     //create and bind VAO
     if (myVAO == null) myVAO = gl.createVertexArray();
