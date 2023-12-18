@@ -21,8 +21,8 @@
   var division1 = 3;
   var division2 = 1;
   var updateDisplay = true;
-  var anglesReset = [110.0, 10.0, 0.0];
-  var angles = [110.0, 10.0, 0.0];
+  var anglesReset = [0.0, 0.0, 0.0];
+  var angles = [90.0, 0.0, 0.0];
   var angleInc = 5.0;
   // IMAGES/TEXTURE SRC ARRAY
   var images = [];
@@ -241,6 +241,7 @@
   }
   function createTerrain() {
       
+    gl.disable(gl.CULL_FACE);
     // clear your points and elements
     points = [];
     indices = [];
@@ -248,7 +249,6 @@
 
     // make your shape based on type
     makeTerrain(5);
-    //makeCylinder(20,2);
         
     //create and bind VAO
     if (myVAO == null) myVAO = gl.createVertexArray();
@@ -378,7 +378,7 @@
     // Retrieve a WebGL context
     gl = canvas.getContext('webgl2');
     // Set the clear color to be black
-    //gl.clearColor(0, 0, 0, 1);
+    gl.clearColor(0, 0, 0, 1);
       
     // some GL initialization
     // these var's are necessary for texturing:
@@ -391,7 +391,7 @@
     gl.enable(gl.CULL_FACE);
     gl.cullFace(gl.BACK);
     gl.frontFace(gl.CCW);
-    //gl.clearColor(0.0, 0.0, 0.0, 1.0);
+    gl.clearColor(0.0, 0.0, 0.0, 1.0);
     gl.clearDepth(1.0);
 
     // Read, compile, and link your shaders
