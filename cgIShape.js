@@ -183,34 +183,51 @@ function makeTerrain (subdivisions)  {
     {
         for (y = 0; y < subdivisions; y++)
         {
-            // Back
-            addTriangle(((x+1)*offset-0.5)-0.5, (y*offset-0.5), -0.5, (x*offset-0.5)-0.5, (y*offset-0.5), -0.5, (x*offset-0.5)-0.5, ((y+1)*offset-0.5), -0.5);
-            addTriangle(((x+1)*offset-0.5)+0.5, (y*offset-0.5), -0.5, (x*offset-0.5)+0.5, (y*offset-0.5), -0.5, (x*offset-0.5)+0.5, ((y+1)*offset-0.5), -0.5);
-            addTriangle(((x+1)*offset-0.5)-0.5, (y*offset-0.5), -0.5, (x*offset-0.5)-0.5, ((y+1)*offset-0.5), -0.5, ((x+1)*offset-0.5)-0.5, ((y+1)*offset-0.5), -0.5);
-            addTriangle(((x+1)*offset-0.5)+0.5, (y*offset-0.5), -0.5, (x*offset-0.5)+0.5, ((y+1)*offset-0.5), -0.5, ((x+1)*offset-0.5)+0.5, ((y+1)*offset-0.5), -0.5);
             // Front
-            addTriangle((x*offset-0.5)-0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)-0.5, (y*offset-0.5), 0.5, (x*offset-0.5)-0.5, ((y+1)*offset-0.5), 0.5);
-            addTriangle((x*offset-0.5)+0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)+0.5, (y*offset-0.5), 0.5, (x*offset-0.5)+0.5, ((y+1)*offset-0.5), 0.5);
-            addTriangle((x*offset-0.5)-0.5, ((y+1)*offset-0.5), 0.5, ((x+1)*offset-0.5)-0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)-0.5, ((y+1)*offset-0.5), 0.5);
-            addTriangle((x*offset-0.5)+0.5, ((y+1)*offset-0.5), 0.5, ((x+1)*offset-0.5)+0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)+0.5, ((y+1)*offset-0.5), 0.5);
+            addTriangle((x*offset-0.5)-0.5, -0.9, 0.5, ((x+1)*offset-0.5)-0.5, -0.5, 0.5, (x*offset-0.5)-0.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)+0.5, -0.9, 0.5, ((x+1)*offset-0.5)+0.5, -0.5, 0.5, (x*offset-0.5)+0.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)-1.5, -0.9, 0.5, ((x+1)*offset-0.5)-1.5, -0.5, 0.5, (x*offset-0.5)-1.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)+1.5, -0.9, 0.5, ((x+1)*offset-0.5)+1.5, -0.5, 0.5, (x*offset-0.5)+1.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)-0.5, -0.9, 0.5, ((x+1)*offset-0.5)-0.5, -0.9, 0.5, ((x+1)*offset-0.5)-0.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)+0.5, -0.9, 0.5, ((x+1)*offset-0.5)+0.5, -0.9, 0.5, ((x+1)*offset-0.5)+0.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)-1.5, -0.9, 0.5, ((x+1)*offset-0.5)-1.5, -0.9, 0.5, ((x+1)*offset-0.5)-1.5, -0.5, 0.5);
+            addTriangle((x*offset-0.5)+1.5, -0.9, 0.5, ((x+1)*offset-0.5)+1.5, -0.9, 0.5, ((x+1)*offset-0.5)+1.5, -0.5, 0.5);
+            
+            // Back
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.9, -0.5, (x*offset-0.5)-0.5, -0.9, -0.5, (x*offset-0.5)-0.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.9, -0.5, (x*offset-0.5)+0.5, -0.9, -0.5, (x*offset-0.5)+0.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)-1.5, -0.9, -0.5, (x*offset-0.5)-1.5, -0.9, -0.5, (x*offset-0.5)-1.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)+1.5, -0.9, -0.5, (x*offset-0.5)+1.5, -0.9, -0.5, (x*offset-0.5)+1.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.9, -0.5, (x*offset-0.5)-0.5, -0.5, -0.5, ((x+1)*offset-0.5)-0.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.9, -0.5, (x*offset-0.5)+0.5, -0.5, -0.5, ((x+1)*offset-0.5)+0.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)-1.5, -0.9, -0.5, (x*offset-0.5)-1.5, -0.5, -0.5, ((x+1)*offset-0.5)-1.5, -0.5, -0.5);
+            addTriangle(((x+1)*offset-0.5)+1.5, -0.9, -0.5, (x*offset-0.5)+1.5, -0.5, -0.5, ((x+1)*offset-0.5)+1.5, -0.5, -0.5);
 
             // Side Left
-            addTriangle(-1, (x*offset-0.5), ((y+1)*offset-0.5), -1, ((x+1)*offset-0.5), (y*offset-0.5), -1, (x*offset-0.5), (y*offset-0.5));
-            addTriangle(-1, ((x+1)*offset-0.5), ((y+1)*offset-0.5), -1, ((x+1)*offset-0.5), (y*offset-0.5), -1, (x*offset-0.5), ((y+1)*offset-0.5));
+            addTriangle(-1.5, -0.9, ((y+1)*offset-0.5), -1.5, -0.9, (y*offset-0.5), -1.5, -0.5, (y*offset-0.5));
+            addTriangle(-1.5, -0.9, ((y+1)*offset-0.5), -1.5, -0.5, (y*offset-0.5), -1.5, -0.5, ((y+1)*offset-0.5));
             // Side Right
-            addTriangle(1, ((x+1)*offset-0.5), (y*offset-0.5), 1, (x*offset-0.5), ((y+1)*offset-0.5), 1, (x*offset-0.5), (y*offset-0.5));
-            addTriangle(1, ((x+1)*offset-0.5), (y*offset-0.5), 1, ((x+1)*offset-0.5), ((y+1)*offset-0.5), 1, (x*offset-0.5), ((y+1)*offset-0.5));
-            
+            addTriangle(1.5, -0.9, -0.5, 1.5, -0.5, ((y+1)*offset-0.5), 1.5, -0.5, (y*offset-0.5));
+            addTriangle(1.5, -0.9, -0.5, 1.5, -0.9, ((y+1)*offset-0.5), 1.5, -0.5, ((y+1)*offset-0.5));
+
             // Bottom
-            addTriangle(((x+1)*offset-0.5)-0.5, -0.5, (y*offset-0.5), (x*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5), (x*offset-0.5)-0.5, -0.5, (y*offset-0.5));
-            addTriangle(((x+1)*offset-0.5)+0.5, -0.5, (y*offset-0.5), (x*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5), (x*offset-0.5)+0.5, -0.5, (y*offset-0.5));
-            addTriangle(((x+1)*offset-0.5)-0.5, -0.5, (y*offset-0.5), ((x+1)*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5), (x*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5));
-            addTriangle(((x+1)*offset-0.5)+0.5, -0.5, (y*offset-0.5), ((x+1)*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5), (x*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.9, (y*offset-0.5), (x*offset-0.5)-0.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)-0.5, -0.9, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.9, (y*offset-0.5), (x*offset-0.5)+0.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)+0.5, -0.9, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-1.5, -0.9, (y*offset-0.5), (x*offset-0.5)-1.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)-1.5, -0.9, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+1.5, -0.9, (y*offset-0.5), (x*offset-0.5)+1.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)+1.5, -0.9, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.9, (y*offset-0.5), ((x+1)*offset-0.5)-0.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)-0.5, -0.9, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.9, (y*offset-0.5), ((x+1)*offset-0.5)+0.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)+0.5, -0.9, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-1.5, -0.9, (y*offset-0.5), ((x+1)*offset-0.5)-1.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)-1.5, -0.9, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+1.5, -0.9, (y*offset-0.5), ((x+1)*offset-0.5)+1.5, -0.9, ((y+1)*offset-0.5), (x*offset-0.5)+1.5, -0.9, ((y+1)*offset-0.5));
             // Top
-            addTriangle((x*offset-0.5)-0.5, 0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-0.5, 0.5, (y*offset-0.5), (x*offset-0.5)-0.5, 0.5, (y*offset-0.5));
-            addTriangle((x*offset-0.5)+0.5, 0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+0.5, 0.5, (y*offset-0.5), (x*offset-0.5)+0.5, 0.5, (y*offset-0.5));
-            addTriangle(((x+1)*offset-0.5)-0.5, 0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-0.5, 0.5, (y*offset-0.5), (x*offset-0.5)-0.5, 0.5, ((y+1)*offset-0.5));
-            addTriangle(((x+1)*offset-0.5)+0.5, 0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+0.5, 0.5, (y*offset-0.5), (x*offset-0.5)+0.5, 0.5, ((y+1)*offset-0.5));
+            addTriangle((x*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-0.5, -0.5, (y*offset-0.5), (x*offset-0.5)-0.5, -0.5, (y*offset-0.5));
+            addTriangle((x*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+0.5, -0.5, (y*offset-0.5), (x*offset-0.5)+0.5, -0.5, (y*offset-0.5));
+            addTriangle((x*offset-0.5)-1.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-1.5, -0.5, (y*offset-0.5), (x*offset-0.5)-1.5, -0.5, (y*offset-0.5));
+            addTriangle((x*offset-0.5)+1.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+1.5, -0.5, (y*offset-0.5), (x*offset-0.5)+1.5, -0.5, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-0.5, -0.5, (y*offset-0.5), (x*offset-0.5)-0.5, -0.5, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+0.5, -0.5, (y*offset-0.5), (x*offset-0.5)+0.5, -0.5, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)-1.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)-1.5, -0.5, (y*offset-0.5), (x*offset-0.5)-1.5, -0.5, ((y+1)*offset-0.5));
+            addTriangle(((x+1)*offset-0.5)+1.5, -0.5, ((y+1)*offset-0.5), ((x+1)*offset-0.5)+1.5, -0.5, (y*offset-0.5), (x*offset-0.5)+1.5, -0.5, ((y+1)*offset-0.5));
         }
     }
 }
