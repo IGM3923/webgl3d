@@ -241,11 +241,8 @@
     makeCylinder(10,10,[1.0,0.5,-0.5],0.25,1.5);
     //middle tower
     makeCylinder(10,10,[0,0,0.5],0.3,0.5);
-    makeCone(10,1,[0,0,1],0.3,0.4);
     makeCylinder(10,10,[0,0,1],0.2,0.5);
-    makeCone(10,1,[0,0,1.5],0.2,0.25);
     //new roof
-    makeRoof(4,1,[0,0,0.5],0.5,0.5,0.25)
 
         
     //create and bind VAO
@@ -299,6 +296,8 @@
     //middle tower
     makeCone(10,1,[0,0,1.5],0.2,0.25);
     makeCone(10,1,[0,0,1],0.3,0.4);
+
+    makeRoof(4,1,[0,0,0.5],0.5,0.5,0.25)
 
         
     //create and bind VAO
