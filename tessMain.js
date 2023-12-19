@@ -1,3 +1,6 @@
+/// File: tessMain.js
+/// Author: Isaac Mixon 
+/// Aithor: Jay Pitcher
   'use strict';
 
   // Global variables that are set and used

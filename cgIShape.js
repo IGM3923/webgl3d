@@ -1,5 +1,4 @@
-/// Program to understand tessellation process in WebGL by coding basic
-///     shapes from triangles
+/// File: cglShape.js
 /// Author: Isaac Mixon 
 /// Aithor: Jay Pitcher
 
