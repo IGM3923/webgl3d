@@ -26,14 +26,14 @@
   var division2 = 1;
   var updateDisplay = true;
   var anglesReset = [0.0, 0.0, 0.0];
-  var angles = [-90.0, 0.0, 0.0];
+  var angles = [0.0, 0.0, 0.0];
   var angleInc = 5.0;
   // IMAGES/TEXTURE SRC ARRAY
   var images = [];
 
   // Given an id, extract the content's of a shader script
   // from the DOM and return the compiled shader
-  function getShader(id) {
+function getShader(id) {
     const script = document.getElementById(id);
     const shaderString = script.text.trim();
 
@@ -60,10 +60,10 @@
     }
 
     return shader;
-  }
+}
 
-  // Create a program with the appropriate vertex and fragment shaders
-  function initProgram() {
+// Create a program with the appropriate vertex and fragment shaders
+function initProgram() {
     const vertexShader = getShader('vertex-shader');
     const fragmentShader = getShader('fragment-shader');
 
@@ -92,6 +92,7 @@
     program.uTheta = gl.getUniformLocation(program, 'theta');
     
     // set up textures and image load and value
+
     // TEXTURE 0 (wall)
     texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -175,6 +176,7 @@
     gl.bindTexture(gl.TEXTURE_2D, texture6);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, images[6]);
+    
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
@@ -191,13 +193,13 @@
     createPeach();
     createWindows();
     createTerrain();
-  }
+}
 
-  async function loadImages(imgs) {
+async function loadImages(imgs) {
     images = await Promise.all(imgs.map(loadImage));
-  }
+}
 
-  function loadImage(url) {
+function loadImage(url) {
     return new Promise((resolve, reject) => {
       const img = new Image();
       img.onload = () => resolve(img);
@@ -205,9 +207,9 @@
       img.crossOrigin = 'anonymous';
       img.src = url;
     });
-  }
+}
 
-  function createBase() {
+function createBase() {
       
       // clear your points and elements
       points = [];
@@ -252,9 +254,9 @@
         
       updateDisplay = true;
       draw(0);
-  }
+}
 
-  function createPath() {
+function createPath() {
       
     // clear your points and elements
     points = [];
@@ -301,7 +303,7 @@
     draw(6);
 }
 
-  function createSideTower() {
+function createSideTower() {
       
     // clear your points and elements
     points = [];
@@ -356,8 +358,9 @@
       
     updateDisplay = true;
     draw(0);
-  }
-  function createSideTowerRoof() {
+}
+
+function createSideTowerRoof() {
     // clear your points and elements
     points = [];
     indices = [];
@@ -411,9 +414,9 @@
       
     updateDisplay = true;
     draw(1);
-  }
+}
 
-  function createPeach() {
+function createPeach() {
       
     // clear your points and elements
     points = [];
@@ -544,7 +547,7 @@ function createWindows() {
   draw(5);
 }
 
-  function createDoor() {
+function createDoor() {
       
     // clear your points and elements
     points = [];
@@ -590,7 +593,7 @@ function createWindows() {
     draw(3);
 }
 
-  function createTerrain() {
+function createTerrain() {
       
     gl.disable(gl.CULL_FACE);
     // clear your points and elements
@@ -638,7 +641,7 @@ function createWindows() {
 }
 
   // We call draw to render to our canvas
-  function draw(tex) {
+function draw(tex) {
     // THIS DRAW USES TEXTURE IN IMAGE[0] POSITION
     // Clear the scene
     //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
@@ -716,10 +719,10 @@ function createWindows() {
     gl.bindVertexArray(null);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-  }
+}
 
   // Entry point to our application
-  async function init() {
+async function init() {
     await loadImages(['walltexture.jpg', 'testroof.png', 'grass.jpg', 'doortexture.png', 'peach.png', 'windows.png', 'path.png']);
     // Retrieve the canvas
     const canvas = document.getElementById('webgl-canvas');
@@ -756,4 +759,4 @@ function createWindows() {
     // and it will need to call the rest of the functions for showing the texture without an
     // extra load/draw after it loads.
     
-  }
+}

@@ -1,6 +1,7 @@
 /// Program to understand tessellation process in WebGL by coding basic
 ///     shapes from triangles
-/// Author: Isaac Mixon
+/// Author: Isaac Mixon 
+/// Aithor: Jay Pitcher
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -318,7 +319,7 @@ function makeTerrain (subdivisions)  {
     }
 }
 
-// Alt of makeCube used for the flat terrain
+// Alt of makeCube used for the flat terrain path
 function makePath (subdivisions)  {
     var offset = (1 / subdivisions);
     // vertical subdivisions
@@ -355,6 +356,7 @@ function makeDoor (subdivisions = 0)  {
             }
 
 }
+
 function makePeach ()  {
     radialdivision = 10;
     radius = 0.2;
