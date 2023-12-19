@@ -10,6 +10,7 @@
     texture2,
     texture3,
     texture4,
+    texture5,
     indices,
     uvs;
   
@@ -23,8 +24,8 @@
   var division1 = 3;
   var division2 = 1;
   var updateDisplay = true;
-  var anglesReset = [0.0, 0.0, 0.0];
-  var angles = [0.0, 0.0, 0.0];
+  var anglesReset = [0.0, 90.0, 0.0];
+  var angles = [0.0, 90.0, 0.0];
   var angleInc = 5.0;
   // IMAGES/TEXTURE SRC ARRAY
   var images = [];
@@ -154,6 +155,19 @@
 
     gl.bindTexture(gl.TEXTURE_2D, null);
 
+    // TEXTURE 5 (windows)
+    texture5 = gl.createTexture();
+
+    gl.bindTexture(gl.TEXTURE_2D, texture5);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, images[5]);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    gl.bindTexture(gl.TEXTURE_2D, null);
+
 
     // CALLS TO CREATE SHAPES
     createBase();
@@ -161,6 +175,7 @@
     createSideTowerRoof();
     createDoor();
     createPeach();
+    createWindows();
     createTerrain();
   }
 
@@ -296,8 +311,8 @@
     //middle tower
     makeCone(10,1,[0,0,1.5],0.2,0.25);
     makeCone(10,1,[0,0,1],0.3,0.4);
-
-    makeRoof(4,1,[0,0,0.5],0.5,0.5,0.25)
+    // main roof
+    makeRoof(4,1,[0,0,0.5],0.5,0.3,0.15)
 
         
     //create and bind VAO
@@ -344,7 +359,7 @@
     uvs = [];
 
     // make your shape based on type
-    makePeach(5);
+    makePeach();
         
     //create and bind VAO
     if (myVAO == null) myVAO = gl.createVertexArray();
@@ -380,6 +395,91 @@
       
     updateDisplay = true;
     draw(4);
+}
+
+function createWindows() {
+      
+  // clear your points and elements
+  points = [];
+  indices = [];
+  uvs = [];
+
+  // make your shape based on type
+  // top tower
+  makeWindows([0,1.3,-0.2],0);
+  makeWindows([0,1.3,0.2],0);
+  makeWindows([0,1.3,0.2],1);
+  makeWindows([0,1.3,-0.2],1);
+
+  // main building front/back
+  makeWindows([0.5,-0.25,-0.51],0);
+  makeWindows([-0.5,-0.25,-0.51],0);
+  makeWindows([0.5,0.25,-0.51],0);
+  makeWindows([-0.5,0.25,-0.51],0);
+  makeWindows([0.5,-0.25,0.51],0);
+  makeWindows([-0.5,-0.25,0.51],0);
+  makeWindows([0.5,0.25,0.51],0);
+  makeWindows([-0.5,0.25,0.51],0);
+  makeWindows([0,0.25,0.51],0);
+  makeWindows([0,-0.25,0.51],0);
+  //               sides
+  makeWindows([0.2,0.2,1.1],1)
+  makeWindows([-0.2,0.2,1.1],1)
+  makeWindows([0.2,0.2,-1.1],1)
+  makeWindows([-0.2,0.2,-1.1],1)
+  // side towers   front/back
+  makeWindows([1,-0.25,-0.75],0);
+  makeWindows([-1,-0.25,-0.75],0);
+  makeWindows([1,0.25,-0.75],0);
+  makeWindows([-1,0.25,-0.75],0);
+  makeWindows([1,0.75,-0.75],0);
+  makeWindows([-1,0.75,-0.75],0);
+  makeWindows([1,-0.25,0.75],0);
+  makeWindows([-1,-0.25,0.75],0);
+  makeWindows([1,0.25,0.75],0);
+  makeWindows([-1,0.25,0.75],0);
+  makeWindows([1,0.75,0.75],0);
+  makeWindows([-1,0.75,0.75],0);
+  //               sides
+  makeWindows([0.5,0.75,-1.25],1);
+  makeWindows([-0.5,0.75,-1.25],1);
+  makeWindows([0.5,0.75,1.25],1);
+  makeWindows([-0.5,0.75,1.25],1);
+      
+  //create and bind VAO
+  if (myVAO == null) myVAO = gl.createVertexArray();
+  gl.bindVertexArray(myVAO);
+  
+  // create and bind vertex buffer
+  if (myVertexBuffer == null) myVertexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, myVertexBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(program.aVertexPosition);
+  gl.vertexAttribPointer(program.aVertexPosition, 4, gl.FLOAT, false, 0, 0);
+  
+  // create and bind uv buffer
+  if (myUVBuffer == null) myUVBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, myUVBuffer);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(program.aVertexTextureCoords);
+  // note that texture uv's are 2d, which is why there's a 2 below
+  gl.vertexAttribPointer(program.aVertexTextureCoords, 2, gl.FLOAT, false, 0, 0);
+
+  // uniform values
+  gl.uniform3fv (program.uTheta, new Float32Array(angles));
+ 
+  // Setting up the IBO
+  if (myIndexBuffer == null) myIndexBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
+  gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+  // Clean
+  gl.bindVertexArray(null);
+  gl.bindBuffer(gl.ARRAY_BUFFER, null);
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+    
+  updateDisplay = true;
+  draw(5);
 }
 
   function createDoor() {
@@ -531,6 +631,15 @@
       // Draw to the scene using triangle primitives
       gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
     }
+    if (tex == 5){
+      // bind the texture
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture5);
+      gl.uniform1i(program.uSampler, 0);
+  
+      // Draw to the scene using triangle primitives
+      gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+    }
 
     // Clean
     gl.bindVertexArray(null);
@@ -540,7 +649,7 @@
 
   // Entry point to our application
   async function init() {
-    await loadImages(['walltexture.jpg', 'testroof.png', 'grass.jpg', 'doortexture.png', 'peach.png']);
+    await loadImages(['walltexture.jpg', 'testroof.png', 'grass.jpg', 'doortexture.png', 'peach.png', 'windows.png']);
     // Retrieve the canvas
     const canvas = document.getElementById('webgl-canvas');
     if (!canvas) {
