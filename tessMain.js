@@ -11,6 +11,7 @@
     texture3,
     texture4,
     texture5,
+    texture6,
     indices,
     uvs;
   
@@ -24,8 +25,8 @@
   var division1 = 3;
   var division2 = 1;
   var updateDisplay = true;
-  var anglesReset = [0.0, 90.0, 0.0];
-  var angles = [0.0, 90.0, 0.0];
+  var anglesReset = [0.0, 0.0, 0.0];
+  var angles = [-90.0, 0.0, 0.0];
   var angleInc = 5.0;
   // IMAGES/TEXTURE SRC ARRAY
   var images = [];
@@ -168,9 +169,22 @@
 
     gl.bindTexture(gl.TEXTURE_2D, null);
 
+    // TEXTURE 6 (path)
+    texture6 = gl.createTexture();
+
+    gl.bindTexture(gl.TEXTURE_2D, texture6);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, images[6]);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    gl.bindTexture(gl.TEXTURE_2D, null);
 
     // CALLS TO CREATE SHAPES
     createBase();
+    createPath();
     createSideTower();
     createSideTowerRoof();
     createDoor();
@@ -239,6 +253,54 @@
       updateDisplay = true;
       draw(0);
   }
+
+  function createPath() {
+      
+    // clear your points and elements
+    points = [];
+    indices = [];
+    uvs = [];
+
+    // make your shape based on type
+    makePath(5);
+    //makeCylinder(20,2);
+        
+    //create and bind VAO
+    if (myVAO == null) myVAO = gl.createVertexArray();
+    gl.bindVertexArray(myVAO);
+    
+    // create and bind vertex buffer
+    if (myVertexBuffer == null) myVertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myVertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexPosition);
+    gl.vertexAttribPointer(program.aVertexPosition, 4, gl.FLOAT, false, 0, 0);
+    
+    // create and bind uv buffer
+    if (myUVBuffer == null) myUVBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myUVBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexTextureCoords);
+    // note that texture uv's are 2d, which is why there's a 2 below
+    gl.vertexAttribPointer(program.aVertexTextureCoords, 2, gl.FLOAT, false, 0, 0);
+
+    // uniform values
+    gl.uniform3fv (program.uTheta, new Float32Array(angles));
+   
+    // Setting up the IBO
+    if (myIndexBuffer == null) myIndexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+    // Clean
+    gl.bindVertexArray(null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+      
+    updateDisplay = true;
+    draw(6);
+}
+
   function createSideTower() {
       
     // clear your points and elements
@@ -640,6 +702,15 @@ function createWindows() {
       // Draw to the scene using triangle primitives
       gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
     }
+    if (tex == 6){
+      // bind the texture
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture6);
+      gl.uniform1i(program.uSampler, 0);
+  
+      // Draw to the scene using triangle primitives
+      gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+    }
 
     // Clean
     gl.bindVertexArray(null);
@@ -649,7 +720,7 @@ function createWindows() {
 
   // Entry point to our application
   async function init() {
-    await loadImages(['walltexture.jpg', 'testroof.png', 'grass.jpg', 'doortexture.png', 'peach.png', 'windows.png']);
+    await loadImages(['walltexture.jpg', 'testroof.png', 'grass.jpg', 'doortexture.png', 'peach.png', 'windows.png', 'path.png']);
     // Retrieve the canvas
     const canvas = document.getElementById('webgl-canvas');
     if (!canvas) {

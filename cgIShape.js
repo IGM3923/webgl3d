@@ -318,6 +318,21 @@ function makeTerrain (subdivisions)  {
     }
 }
 
+// Alt of makeCube used for the flat terrain
+function makePath (subdivisions)  {
+    var offset = (1 / subdivisions);
+    // vertical subdivisions
+    for (x = 0; x < subdivisions; x++)
+    {
+        for (y = 0; y < subdivisions; y++)
+        {
+            // Top
+            addTriangle((x*offset-0.5), -0.49, ((y+1)*offset-0.5)-1.5, ((x+1)*offset-0.5), -0.49, (y*offset-0.5), (x*offset-0.5), -0.49, (y*offset-0.5));
+            addTriangle(((x+1)*offset-0.5), -0.49, ((y+1)*offset-0.5)-1.5, ((x+1)*offset-0.5), -0.49, (y*offset-0.5), (x*offset-0.5), -0.49, ((y+1)*offset-0.5)-1.5); 
+        }
+    }
+}
+
 // Alt of makeCube used for the door of castle building
 function makeDoor (subdivisions = 0)  {
             addTriangle(0.25, -0.5, -0.515, -0.25, -0.5, -0.515, 0.25, 0, -0.515);
