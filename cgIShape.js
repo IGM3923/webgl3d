@@ -157,6 +157,54 @@ function makeCone (radialdivision, heightdivision,origin,radius,height) {
     }
 
 }
+
+
+function roofHelp(x1,x2,y1,y2,origin,height,slice){
+
+    var xorg = origin[0];
+    var yorg = origin[1];
+    var zorg = origin[2];
+
+    ratio = height/slice;
+    x3 = (x1+xorg)/ratio;
+    x4 = (x2+xorg)/ratio;
+    y3 = (y1+yorg)/ratio;
+    y4 = (y2+yorg)/ratio;
+    //top
+    addTriangle(x3,zorg+slice,y3,xorg,zorg+slice,yorg,x4,zorg+slice,y4);
+
+    //side
+    addTriangle(x2,zorg,y2,x1,zorg,y1,x3,zorg+slice,y3)
+    addTriangle(x3,zorg+slice,y3,x4,zorg+slice,y4,x2,zorg,y2);
+}
+
+/**
+ * 
+ * @param {*} radialdivision 
+ * @param {*} heightdivision 
+ * @param {*} origin 
+ * @param {*} radius 
+ * @param {*} height 
+ * @param {*} slice, height of slice
+ */
+function makeRoof (radialdivision, heightdivision,origin,radius,height,slice) {
+
+    var xorg = origin[0];
+    var yorg = origin[1];
+    var zorg = origin[2];
+    var top = zorg + height
+    
+    var pi = Math.PI;
+
+    addTriangle(-1,zorg,-0.5,-1,zorg,0.5,1,zorg,-0.5);
+    addTriangle(-1,zorg,0.5,1,zorg,0.5,1,zorg,-0.5)
+
+    roofHelp(1,1,0.5,-0.5,origin,height,slice);
+    roofHelp(-1,-1,-0.5,0.5,origin,height,slice);
+    roofHelp(-1,1,0.5,0.5,origin,height,slice);
+    roofHelp(1,-1,-0.5,-0.5,origin,height,slice);
+
+}
     
 
 function makeSphere (slices, stacks) {
