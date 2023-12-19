@@ -110,8 +110,11 @@ function createNewShape() {
     makeCone(10,1,[1.0,0.5,1],0.25,0.25);
     //middle tower
     makeCylinder(10,10,[0,0,0.5],0.3,0.5);
+    makeCone(10,1,[0,0,1],0.3,0.4);
     makeCylinder(10,10,[0,0,1],0.2,0.5);
     makeCone(10,1,[0,0,1.5],0.2,0.25);
+    //new roof
+    makeRoof(4,1,[0,0,0.5],0.5,0.5,0.25)
 
 
     // make your shape based on type (TODO: See above)
