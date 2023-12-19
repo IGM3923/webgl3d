@@ -8,6 +8,8 @@
     texture,
     texture1,
     texture2,
+    texture3,
+    texture4,
     indices,
     uvs;
   
@@ -88,7 +90,7 @@
     program.uTheta = gl.getUniformLocation(program, 'theta');
     
     // set up textures and image load and value
-    // TEXTURE 1
+    // TEXTURE 0 (wall)
     texture = gl.createTexture();
     gl.bindTexture(gl.TEXTURE_2D, texture);
     gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
@@ -100,7 +102,7 @@
 
     gl.bindTexture(gl.TEXTURE_2D, null);
 
-    // TEXTURE 2
+    // TEXTURE 1 (sky)
     texture1 = gl.createTexture();
 
     gl.bindTexture(gl.TEXTURE_2D, texture1);
@@ -113,7 +115,7 @@
 
     gl.bindTexture(gl.TEXTURE_2D, null);
 
-    // TEXTURE 3
+    // TEXTURE 2 (grass)
     texture2 = gl.createTexture();
 
     gl.bindTexture(gl.TEXTURE_2D, texture2);
@@ -126,10 +128,39 @@
 
     gl.bindTexture(gl.TEXTURE_2D, null);
 
+    // TEXTURE 3 (door)
+    texture3 = gl.createTexture();
+
+    gl.bindTexture(gl.TEXTURE_2D, texture3);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, images[3]);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    gl.bindTexture(gl.TEXTURE_2D, null);
+
+    // TEXTURE 4 (peach)
+    texture4 = gl.createTexture();
+
+    gl.bindTexture(gl.TEXTURE_2D, texture4);
+    gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGB, gl.RGB, gl.UNSIGNED_BYTE, images[4]);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+
+    gl.bindTexture(gl.TEXTURE_2D, null);
+
+
     // CALLS TO CREATE SHAPES
     createBase();
     createSideTower();
     createSideTowerRoof();
+    createDoor();
+    createPeach();
     createTerrain();
   }
 
@@ -191,7 +222,7 @@
       gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
         
       updateDisplay = true;
-      draw();
+      draw(0);
   }
   function createSideTower() {
       
@@ -200,10 +231,6 @@
     indices = [];
     uvs = [];
 
-    // TODO: if we want to update the angles of this object separate of the main angle array, 
-    // angles = [0,0,0] // placeholder 0's
-    // this, however, does break rotation. ¯\_(ツ)_/¯
-    // makeCylinder(10,2);
     //corner tower 1
     makeCylinder(10,10,[-1.0,-0.5,-0.5],0.25,1.5);
     //corner tower 2
@@ -250,7 +277,7 @@
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
       
     updateDisplay = true;
-    draw();
+    draw(0);
   }
   function createSideTowerRoof() {
     // clear your points and elements
@@ -303,8 +330,101 @@
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
       
     updateDisplay = true;
-    draw1();
+    draw(1);
   }
+
+  function createPeach() {
+      
+    // clear your points and elements
+    points = [];
+    indices = [];
+    uvs = [];
+
+    // make your shape based on type
+    makePeach(5);
+        
+    //create and bind VAO
+    if (myVAO == null) myVAO = gl.createVertexArray();
+    gl.bindVertexArray(myVAO);
+    
+    // create and bind vertex buffer
+    if (myVertexBuffer == null) myVertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myVertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexPosition);
+    gl.vertexAttribPointer(program.aVertexPosition, 4, gl.FLOAT, false, 0, 0);
+    
+    // create and bind uv buffer
+    if (myUVBuffer == null) myUVBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myUVBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexTextureCoords);
+    // note that texture uv's are 2d, which is why there's a 2 below
+    gl.vertexAttribPointer(program.aVertexTextureCoords, 2, gl.FLOAT, false, 0, 0);
+
+    // uniform values
+    gl.uniform3fv (program.uTheta, new Float32Array(angles));
+   
+    // Setting up the IBO
+    if (myIndexBuffer == null) myIndexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+    // Clean
+    gl.bindVertexArray(null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+      
+    updateDisplay = true;
+    draw(4);
+}
+
+  function createDoor() {
+      
+    // clear your points and elements
+    points = [];
+    indices = [];
+    uvs = [];
+
+    // make your shape based on type
+    makeDoor(5);
+        
+    //create and bind VAO
+    if (myVAO == null) myVAO = gl.createVertexArray();
+    gl.bindVertexArray(myVAO);
+    
+    // create and bind vertex buffer
+    if (myVertexBuffer == null) myVertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myVertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexPosition);
+    gl.vertexAttribPointer(program.aVertexPosition, 4, gl.FLOAT, false, 0, 0);
+    
+    // create and bind uv buffer
+    if (myUVBuffer == null) myUVBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myUVBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexTextureCoords);
+    // note that texture uv's are 2d, which is why there's a 2 below
+    gl.vertexAttribPointer(program.aVertexTextureCoords, 2, gl.FLOAT, false, 0, 0);
+
+    // uniform values
+    gl.uniform3fv (program.uTheta, new Float32Array(angles));
+   
+    // Setting up the IBO
+    if (myIndexBuffer == null) myIndexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+    // Clean
+    gl.bindVertexArray(null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+      
+    updateDisplay = true;
+    draw(3);
+}
+
   function createTerrain() {
       
     gl.disable(gl.CULL_FACE);
@@ -349,12 +469,12 @@
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
       
     updateDisplay = true;
-    draw2();
+    draw(2);
 }
 
   // We call draw to render to our canvas
-  // THIS DRAW USES TEXTURE IN IMAGE[0] POSITION
-  function draw() {
+  function draw(tex) {
+    // THIS DRAW USES TEXTURE IN IMAGE[0] POSITION
     // Clear the scene
     //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
     gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
@@ -363,74 +483,61 @@
     gl.bindVertexArray(myVAO);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
 
-    // bind the texture
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture);
-    gl.uniform1i(program.uSampler, 0);
+    if (tex == 0){
+      // bind the texture
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture);
+      gl.uniform1i(program.uSampler, 0);
 
-    // Draw to the scene using triangle primitives
-    gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
-
-    // Clean
-    gl.bindVertexArray(null);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-
-  }
-  // We call draw to render to our canvas
-  // THIS DRAW USES TEXTURE IN IMAGE[1] POSITION
-  function draw1() {
-    // Clear the scene
-    // gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-    // Bind the VAO
-    gl.bindVertexArray(myVAO);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
-
-    // bind the texture
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture1);
-    gl.uniform1i(program.uSampler, 0);
-
-    // Draw to the scene using triangle primitives
-    gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
-
-    // Clean
-    gl.bindVertexArray(null);
-    gl.bindBuffer(gl.ARRAY_BUFFER, null);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-
-  }
-  // We call draw to render to our canvas
-  // THIS DRAW USES TEXTURE IN IMAGE[2] POSITION
-  function draw2() {
-    // Clear the scene
-    //gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-    gl.viewport(0, 0, gl.canvas.width, gl.canvas.height);
-
-    // Bind the VAO
-    gl.bindVertexArray(myVAO);
-    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
-
-    // bind the texture
-    gl.activeTexture(gl.TEXTURE0);
-    gl.bindTexture(gl.TEXTURE_2D, texture2);
-    gl.uniform1i(program.uSampler, 0);
-
-    // Draw to the scene using triangle primitives
-    gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+      // Draw to the scene using triangle primitives
+      gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+    }
+    if (tex == 1){
+      // bind the texture
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture1);
+      gl.uniform1i(program.uSampler, 0);
+  
+      // Draw to the scene using triangle primitives
+      gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+    }
+    if (tex == 2){
+      // bind the texture
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture2);
+      gl.uniform1i(program.uSampler, 0);
+  
+      // Draw to the scene using triangle primitives
+      gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+    } 
+    if (tex == 3){
+      // bind the texture
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture3);
+      gl.uniform1i(program.uSampler, 0);
+  
+      // Draw to the scene using triangle primitives
+      gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+    }
+    if (tex == 4){
+      // bind the texture
+      gl.activeTexture(gl.TEXTURE0);
+      gl.bindTexture(gl.TEXTURE_2D, texture4);
+      gl.uniform1i(program.uSampler, 0);
+  
+      // Draw to the scene using triangle primitives
+      gl.drawElements(gl.TRIANGLES, indices.length, gl.UNSIGNED_SHORT, 0);
+    }
 
     // Clean
     gl.bindVertexArray(null);
     gl.bindBuffer(gl.ARRAY_BUFFER, null);
     gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
-
   }
 
   // Entry point to our application
   async function init() {
-    await loadImages(['walltexture1.jpg', 'testroof.png', 'grass.jpg']);
+    await loadImages(['walltexture.jpg', 'testroof.png', 'grass.jpg', 'doortexture.png', 'peach.png']);
     // Retrieve the canvas
     const canvas = document.getElementById('webgl-canvas');
     if (!canvas) {
@@ -439,7 +546,7 @@
     }
 
     // deal with keypress
-    window.addEventListener('keydown', gotKey ,false);
+    window.addEventListener('keydown', gotKey , false);
 
     // Retrieve a WebGL context
     gl = canvas.getContext('webgl2');

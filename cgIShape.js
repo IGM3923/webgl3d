@@ -189,7 +189,7 @@ function makeBase (subdivisions)  {
             addTriangle((x*offset-0.5)+0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)+0.5, (y*offset-0.5), 0.5, (x*offset-0.5)+0.5, ((y+1)*offset-0.5), 0.5);
             addTriangle((x*offset-0.5)-0.5, ((y+1)*offset-0.5), 0.5, ((x+1)*offset-0.5)-0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)-0.5, ((y+1)*offset-0.5), 0.5);
             addTriangle((x*offset-0.5)+0.5, ((y+1)*offset-0.5), 0.5, ((x+1)*offset-0.5)+0.5, (y*offset-0.5), 0.5, ((x+1)*offset-0.5)+0.5, ((y+1)*offset-0.5), 0.5);
-
+            
             // Side Left
             addTriangle(-1, (x*offset-0.5), ((y+1)*offset-0.5), -1, ((x+1)*offset-0.5), (y*offset-0.5), -1, (x*offset-0.5), (y*offset-0.5));
             addTriangle(-1, ((x+1)*offset-0.5), ((y+1)*offset-0.5), -1, ((x+1)*offset-0.5), (y*offset-0.5), -1, (x*offset-0.5), ((y+1)*offset-0.5));
@@ -270,6 +270,48 @@ function makeTerrain (subdivisions)  {
     }
 }
 
+// Alt of makeCube used for the door of castle building
+function makeDoor (subdivisions = 0)  {
+            addTriangle(0.25, -0.5, -0.515, -0.25, -0.5, -0.515, 0.25, 0, -0.515);
+            addTriangle(-0.25, -0.5, -0.515, 0.25, 0, -0.515, -0.25, 0, -0.515);
+            radialdivision = 10;
+            radius = 0.25;
+            origin = [0,0,-0.505];
+            var xorg = origin[0];
+            var yorg = origin[1];
+            var zorg = origin[2];
+            var pi = Math.PI;
+            for (i = 0; i < radialdivision; i++)
+            {
+                x1 = xorg + Math.cos(i*(2*pi/radialdivision))*radius;
+                x2 = xorg + Math.cos((i+1)*(2*pi/radialdivision))*radius;
+                y1 = yorg + Math.sin(i*(2*pi/radialdivision))*radius;
+                y2 = yorg + Math.sin((i+1)*(2*pi/radialdivision))*radius;
+                
+                addTriangle(xorg,yorg,zorg,x1,y1,zorg,x2,y2,zorg);
+            }
+
+}
+function makePeach (subdivisions = 0)  {
+    radialdivision = 10;
+    radius = 0.2;
+    origin = [0,0.75,-0.3];
+    var xorg = origin[0];
+    var yorg = origin[1];
+    var zorg = origin[2];
+    
+    var pi = Math.PI;
+    for (i = 0; i < radialdivision; i++)
+    {
+        x1 = xorg + Math.cos(i*(2*pi/radialdivision))*radius;
+        x2 = xorg + Math.cos((i+1)*(2*pi/radialdivision))*radius;
+        y1 = yorg + Math.sin(i*(2*pi/radialdivision))*radius;
+        y2 = yorg + Math.sin((i+1)*(2*pi/radialdivision))*radius;
+        addTriangle(xorg,yorg,zorg,x1,y1,zorg,x2,y2,zorg);
+    }
+
+}
+
 
 ////////////////////////////////////////////////////////////////////
 //
@@ -290,16 +332,16 @@ function addTriangle (x0,y0,z0,x1,y1,z1,x2,y2,z2) {
     
     // push first vertex
     points.push(x0);  uvs.push (1.0); 
-    points.push(y0);  uvs.push (0.0); 
-    points.push(z0);  uvs.push (0.0); 
+    points.push(y0);  uvs.push (1.0); 
+    points.push(z0);  //uvs.push (1.0); 
     points.push(1.0);
     indices.push(nverts);
     nverts++;
     
     // push second vertex
     points.push(x1); uvs.push (0.0);
-    points.push(y1); uvs.push (1.0);
-    points.push(z1); uvs.push (0.0);
+    points.push(y1); uvs.push (0.0);
+    points.push(z1); //uvs.push (0.0);
     points.push(1.0);
     indices.push(nverts);
     nverts++
@@ -307,7 +349,7 @@ function addTriangle (x0,y0,z0,x1,y1,z1,x2,y2,z2) {
     // push third vertex
     points.push(x2); uvs.push (0.0);
     points.push(y2); uvs.push (0.0);
-    points.push(z2); uvs.push (1.0);
+    points.push(z2); //uvs.push (1.0);
     points.push(1.0);
     indices.push(nverts);
     nverts++;
