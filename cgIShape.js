@@ -340,10 +340,10 @@ function makeDoor (subdivisions = 0)  {
             }
 
 }
-function makePeach (subdivisions = 0)  {
+function makePeach ()  {
     radialdivision = 10;
     radius = 0.2;
-    origin = [0,0.75,-0.3];
+    origin = [0,0.8,-0.3];
     var xorg = origin[0];
     var yorg = origin[1];
     var zorg = origin[2];
@@ -356,6 +356,29 @@ function makePeach (subdivisions = 0)  {
         y1 = yorg + Math.sin(i*(2*pi/radialdivision))*radius;
         y2 = yorg + Math.sin((i+1)*(2*pi/radialdivision))*radius;
         addTriangle(xorg,yorg,zorg,x1,y1,zorg,x2,y2,zorg);
+    }
+
+}
+function makeWindows (origin, side)  {
+    radialdivision = 10;
+    radius = 0.1;
+    var xorg = origin[0];
+    var yorg = origin[1];
+    var zorg = origin[2];
+    
+    var pi = Math.PI;
+    for (i = 0; i < radialdivision; i++)
+    {
+        x1 = xorg + Math.cos(i*(2*pi/radialdivision))*radius;
+        x2 = xorg + Math.cos((i+1)*(2*pi/radialdivision))*radius;
+        y1 = yorg + Math.sin(i*(2*pi/radialdivision))*radius;
+        y2 = yorg + Math.sin((i+1)*(2*pi/radialdivision))*radius;
+        if (side == 0){
+            addTriangle(xorg,yorg,zorg,x1,y1,zorg,x2,y2,zorg);
+        }
+        else {      
+            addTriangle(zorg,yorg,xorg,zorg,y1,x1,zorg,y2,x2);
+        }
     }
 
 }
