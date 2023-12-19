@@ -22,7 +22,7 @@
   var division2 = 1;
   var updateDisplay = true;
   var anglesReset = [0.0, 0.0, 0.0];
-  var angles = [90.0, 0.0, 0.0];
+  var angles = [0.0, 0.0, 0.0];
   var angleInc = 5.0;
   // IMAGES/TEXTURE SRC ARRAY
   var images = [];
@@ -129,6 +129,7 @@
     // CALLS TO CREATE SHAPES
     createBase();
     createSideTower();
+    createSideTowerRoof();
     createTerrain();
   }
 
@@ -198,27 +199,19 @@
     points = [];
     indices = [];
     uvs = [];
-    bary = [];
 
     // TODO: if we want to update the angles of this object separate of the main angle array, 
     // angles = [0,0,0] // placeholder 0's
     // this, however, does break rotation. ¯\_(ツ)_/¯
     // makeCylinder(10,2);
-    
-    //TODO: Instead of switching between shapes, make all draw requests below. 
-    makeBase(division1);
     //corner tower 1
     makeCylinder(10,10,[-1.0,-0.5,-0.5],0.25,1.5);
-    makeCone(10,1,[-1.0,-0.5,1],0.25,0.25);
     //corner tower 2
     makeCylinder(10,10,[-1.0,0.5,-0.5],0.25,1.5);
-    makeCone(10,1,[-1.0,0.5,1],0.25,0.25);
     //corner tower 3
     makeCylinder(10,10,[1.0,-0.5,-0.5],0.25,1.5);
-    makeCone(10,1,[1.0,-0.5,1],0.25,0.25);
     //corner tower 4
     makeCylinder(10,10,[1.0,0.5,-0.5],0.25,1.5);
-    makeCone(10,1,[1.0,0.5,1],0.25,0.25);
     //middle tower
     makeCylinder(10,10,[0,0,0.5],0.3,0.5);
     makeCone(10,1,[0,0,1],0.3,0.4);
@@ -262,6 +255,59 @@
       
     updateDisplay = true;
     draw();
+  }
+  function createSideTowerRoof() {
+    // clear your points and elements
+    points = [];
+    indices = [];
+    uvs = [];
+    //corner tower 1
+    makeCone(10,1,[-1.0,-0.5,1],0.25,0.25);
+    //corner tower 2
+    makeCone(10,1,[-1.0,0.5,1],0.25,0.25);
+    //corner tower 3
+    makeCone(10,1,[1.0,-0.5,1],0.25,0.25);
+    //corner tower 4
+    makeCone(10,1,[1.0,0.5,1],0.25,0.25);
+    //middle tower
+    makeCone(10,1,[0,0,1.5],0.2,0.25);
+    makeCone(10,1,[0,0,1],0.3,0.4);
+
+        
+    //create and bind VAO
+    if (myVAO == null) myVAO = gl.createVertexArray();
+    gl.bindVertexArray(myVAO);
+    
+    // create and bind vertex buffer
+    if (myVertexBuffer == null) myVertexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myVertexBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(points), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexPosition);
+    gl.vertexAttribPointer(program.aVertexPosition, 4, gl.FLOAT, false, 0, 0);
+    
+    // create and bind uv buffer
+    if (myUVBuffer == null) myUVBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, myUVBuffer);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(uvs), gl.STATIC_DRAW);
+    gl.enableVertexAttribArray(program.aVertexTextureCoords);
+    // note that texture uv's are 2d, which is why there's a 2 below
+    gl.vertexAttribPointer(program.aVertexTextureCoords, 2, gl.FLOAT, false, 0, 0);
+
+    // uniform values
+    gl.uniform3fv (program.uTheta, new Float32Array(angles));
+   
+    // Setting up the IBO
+    if (myIndexBuffer == null) myIndexBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, myIndexBuffer);
+    gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indices), gl.STATIC_DRAW);
+
+    // Clean
+    gl.bindVertexArray(null);
+    gl.bindBuffer(gl.ARRAY_BUFFER, null);
+    gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, null);
+      
+    updateDisplay = true;
+    draw1();
   }
   function createTerrain() {
       
@@ -388,7 +434,7 @@
 
   // Entry point to our application
   async function init() {
-    await loadImages(['walltexture1.jpg', 'sky.png', 'grass.jpg']);
+    await loadImages(['walltexture1.jpg', 'testroof.png', 'grass.jpg']);
     // Retrieve the canvas
     const canvas = document.getElementById('webgl-canvas');
     if (!canvas) {
